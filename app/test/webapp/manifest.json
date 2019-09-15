@@ -1,14 +1,14 @@
 {
     "_version": "1.8.0",
     "sap.app": {
-        "id": "bookshop",
+        "id": "admin",
         "type": "application",
-        "title": "Browse Books",
-        "description": "Sample Application",
+        "title": "Test",
+        "description": "Testing",
         "i18n": "i18n/i18n.properties",
         "dataSources": {
-            "CatalogService": {
-                "uri": "/catalog/",
+            "AdminService": {
+                "uri": "/main/",
                 "type": "OData",
                 "settings": {
                     "odataVersion": "4.0"
@@ -33,7 +33,7 @@
                 "uri": "i18n/i18n.properties"
             },
             "": {
-                "dataSource": "CatalogService",
+                "dataSource": "AdminService",
                 "settings": {
                     "synchronizationMode": "None",
                     "operationMode": "Server",

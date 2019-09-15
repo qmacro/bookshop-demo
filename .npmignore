@@ -1,5 +1,0 @@
-.eslintrc.json
-.vscode
-.DS_Store
-db/csv.numbers
-**/*.db

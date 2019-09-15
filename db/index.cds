@@ -7,5 +7,4 @@ namespace my.bookshop;
 using from './schema';
 
 // 2) In addition, generic service providers need views for exposed entities
-using from '../srv/admin-service';
-using from '../srv/cat-service';
+using from '../srv/service';

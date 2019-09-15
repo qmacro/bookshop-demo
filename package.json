@@ -6,13 +6,13 @@
   "license": "ISC",
   "dependencies": {
     "@sap/cds": "^3.16.3",
-    "@sap/cds-odata-v2-adapter-proxy": "^1.4.1",
-    "express": "^4.16.4",
-    "uuid": "^3.3.3"
+    "@sap/cds-odata-v2-adapter-proxy": "^1.2.0",
+    "express": "^4.16.4"
   },
   "devDependencies": {
     "jest": "^24.8.0",
-    "sqlite3": "^4.0.7",
+    "nodemon": "^1.19.2",
+    "sqlite3": "^4.1.0",
     "supertest": "^4.0.2"
   },
   "scripts": {
@@ -20,8 +20,7 @@
     "deploy": "cds deploy db --to sqlite:db/bookshop.db",
     "debug": "node --inspect node_modules/@sap/cds/bin/cds.js run",
     "start": "cds run",
-    "startv2": "node v2server",
-    "watch": "nodemon -w . -i node_modules/**,.git/** -e cds -x npm run start",
+    "v2server": "node v2server",
     "test": "jest"
   },
   "cds": {

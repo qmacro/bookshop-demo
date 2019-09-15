@@ -1,38 +1,34 @@
-/*
-  This model controls what gets served to Fiori frontends...
-*/
+using MainService from '../srv/service';
 
-// 1) the annotated services per app...
-using from './admin/fiori-service';
-using from './browse/fiori-service';
-using from './orders/fiori-service';
+////////////////////////////////////////////////////////////////////////////
+//
+//	Books Object Page
+//
+annotate MainService.Books with @(
+	UI: {
+		Facets: [
+			{$Type: 'UI.ReferenceFacet', Label: '{i18n>General}', Target: '@UI.FieldGroup#General'},
+			{$Type: 'UI.ReferenceFacet', Label: '{i18n>Details}', Target: '@UI.FieldGroup#Details'}
+		],
+		FieldGroup#General: {
+			Data: [
+				{Value: title},
+				{Value: author_ID},
+			]
+		},
+		FieldGroup#Details: {
+			Data: [
+				{Value: price},
+				{Value: currency_code, Label: '{i18n>Currency}'},
+			]
+		}
+	}
+);
 
 
 // 2) fiori annotations common to all apps...
 using my.bookshop as my from '../db/schema';
 
-annotate my.Authors with @(
-	UI: {
-		Identification: [{Value:name}],
-	  SelectionFields: [ ID, name, alive ],
-		LineItem: [
-			{Value: ID},
-			{Value: name},
-			{Value: dateOfBirth},
-			{Value: placeOfBirth},
-			{Value: placeOfDeath},
-			{Value: placeOfDeath},
-		],
-    HeaderInfo: {
-      TypeName: 'Author', TypeNamePlural: 'Authors',
-      Title: { Value: ID },
-      Description: { Value: name }
-    },
-    Facets: [
-			{$Type: 'UI.ReferenceFacet', Label: '{i18n>Books}', Target: 'books/@UI.LineItem'},
-		]
-	}
-);
 
 ////////////////////////////////////////////////////////////////////////////
 //
@@ -43,59 +39,16 @@ annotate my.Books with @(
 		Identification: [{Value:title}],
 	  SelectionFields: [ ID, author.name, price, currency_code ],
 		LineItem: [
-			{
-				$Type:'UI.DataFieldWithIntentBasedNavigation', 
-				Value: ID, 
-				SemanticObject: 'Books',
-				Action: 'manage'
-			},
+			{Value: ID},
 			{Value: title},
-			{Value: author.name},
-			{Value: stock},
+			{$Type:'UI.DataFieldWithNavigationPath', Value: author.name, Label:'{i18n>Author}', Target:'author'},
+			// {$Type:'UI.DataFieldWithNavigationPath', Value: author_ID, Label:'{i18n>AuthorID}', Target:'author'},
+			{Value: author_ID, Label:'{i18n>AuthorID}'},
 			{Value: price},
 			{Value: currency.symbol, Label:''},
-			// {Value: author_ID, Label:'{i18n>AuthorID}'},
-			/*
-			{
-				$Type:'UI.DataFieldWithNavigationPath', 
-				Value: author_ID, 
-				Label:'{i18n>AuthorID}', 
-				Target:'author'
-			},
-			{
-				$Type:'UI.DataFieldWithNavigationPath', 
-				Value: author.ID, 
-				Label:'Navigate to Author',
-				SemanticObject: 'Authors',
-				Action: 'manage'
-			}
-			{
-				$Type:'UI.DataFieldForIntentBasedNavigation', 
-				Value: author.ID, 
-				Label:'Action for Navigation to Author', 
-				SemanticObject: 'Authors',
-				Action: 'manage'
-			}			
-			*/
-			// {Value: author.name},
-			{
-				$Type:'UI.DataFieldWithIntentBasedNavigation',
-				Value: author.ID,
-				Label:'{i18n>Author}',
-				SemanticObject: 'Authors',
-				Action: 'manage'
-			}
 		]
 	},
-) {
-	author @(
-		// Common.Text: { $value:author.name, "@UI.TextArrangement": #TextOnly },
-		ValueList.entity:'Authors',
-		// Common.ValueList.Parameters:[
-		// 	{ $Type:'Common.ValueListParameterInOut', LocalDataProperty:author_name, ValueListProperty:'name' },
-		// ],		
-	);
-}
+);
 
 ////////////////////////////////////////////////////////////////////////////
 //
@@ -124,15 +77,8 @@ annotate my.Books with {
 	author @title:'{i18n>AuthorID}';
 	price @title:'{i18n>Price}';
 	stock @title:'{i18n>Stock}';
-	descr @UI.MultiLineText;
 }
 
-
-////////////////////////////////////////////////////////////////////////////
-//
-//	Authors Elements
-//
 annotate my.Authors with {
-	ID @title:'{i18n>ID}' @UI.HiddenFilter;
 	name @title:'{i18n>AuthorName}';
 }
